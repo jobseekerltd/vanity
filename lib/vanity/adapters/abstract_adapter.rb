@@ -148,6 +148,11 @@ module Vanity
       def destroy_experiment(experiment)
         fail "Not implemented"
       end
+      
+      #Delete all collected data for this experiment.
+      def reset_experiment(experiment)
+        fail "Not implemented"
+      end
 
     end
   end
