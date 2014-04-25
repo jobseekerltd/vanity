@@ -21,3 +21,9 @@ appraise "rails4" do
   gem "fastthread", :git => "git://github.com/zoltankiss/fastthread.git", :platforms => :mri_20
   gem "passenger", "~>3.0"
 end
+
+appraise "rails41" do
+  gem "rails", "4.1.0"
+  gem "fastthread", :git => "git://github.com/zoltankiss/fastthread.git", :platforms => :mri_20
+  gem "passenger", "~>3.0"
+end
