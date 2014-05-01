@@ -69,12 +69,12 @@ module VanityTestHelpers
     defined?(Rails::Railtie)
   end
 
-  def setup_after
+  def before_setup
     FileUtils.mkpath "tmp/experiments/metrics"
     new_playground
   end
 
-  def teardown_after
+  def after_teardown
     Vanity.context = nil
     FileUtils.rm_rf "tmp"
     Vanity.playground.connection.flushdb if Vanity.playground.connected?
@@ -123,19 +123,6 @@ module VanityTestHelpers
 
   def dummy_request
     defined?(ActionDispatch) ? ActionDispatch::TestRequest.new() : ActionController::TestRequest.new()
-  end
-
-  # Defining setup/tear down in a module and including it below doesn't
-  # override the built-in setup/teardown methods, so we alias_method_chain
-  # them to run.
-  def self.included(klass)
-    klass.class_eval {
-      alias :teardown_before :teardown
-      alias :teardown :teardown_after
-
-      alias :setup_before :setup
-      alias :setup :setup_after
-    }
   end
 end
 
