@@ -56,7 +56,7 @@ module Vanity
 
       # Conversion rate calculated as converted/participants
       def conversion_rate
-        @conversion_rate ||= (participants > 0 ? conversions.to_f/participants.to_f  : 0.0)
+        @conversion_rate ||= (participants > 0 ? conversions.to_f/participants.to_f : 0.0)
       end
 
       # The measure we use to order (sort) alternatives and decide which one
@@ -84,6 +84,7 @@ module Vanity
       def load_counts
         if @experiment.playground.collecting?
           @participants, @converted, @conversions = @experiment.playground.connection.ab_counts(@experiment.id, id).values_at(:participants, :converted, :conversions)
+          @conversions /= 2
         else
           @participants = @converted = @conversions = 0
         end
