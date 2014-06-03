@@ -8,7 +8,7 @@
       <td class="option"><%= alt.name.gsub(/^o/, "O") %>:</td>
       <td class="value"><code><%=vanity_h alt.value.to_s %></code></td>
       <td class="value"><%= alt.participants %> participants</td>
-      <td class="value"><%= alt.converted %> converted</td>
+      <td class="value"><%= alt.conversions %> conversions</td>
       <td>
         <%= "%.1f%%" % [alt.conversion_rate * 100] %>
         <%= "(%d%% this is best)" % [alt.probability] if score.method == :bayes_score %>
