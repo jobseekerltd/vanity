@@ -140,7 +140,9 @@ module Vanity
             index = connection.ab_showing(@id, identity)
             unless index
               index = alternative_for(identity).to_i
-              save_assignment_if_valid_visitor(identity, index, request) unless @playground.using_js?
+              if !@playground.using_js? || for_action_mailer?
+                save_assignment_if_valid_visitor(identity, index, request)
+              end
             end
           else
             index = connection.ab_get_outcome(@id) || alternative_for(identity)
@@ -154,6 +156,9 @@ module Vanity
         alternatives[index.to_i]
       end
 
+      def for_action_mailer?
+        defined?(ActionMailer) && Vanity.context.is_a?(ActionMailer::Base)
+      end
 
       # -- Testing and JS Callback --
 

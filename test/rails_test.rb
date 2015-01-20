@@ -193,9 +193,13 @@ class VanityMailer < ActionMailer::Base
   include ActionView::Helpers::AssetTagHelper
   include ActionView::Helpers::TagHelper
 
-  def ab_test_subject(user, forced_outcome=true)
+  def ab_test_subject(user, forced_outcome=nil)
     use_vanity_mailer user
-    experiment(:pie_or_cake).chooses(forced_outcome)
+    if forced_outcome.nil?
+      experiment(:pie_or_cake).choose
+    else
+      experiment(:pie_or_cake).chooses(forced_outcome)
+    end
 
     if defined?(Rails::Railtie)
       mail :subject =>ab_test(:pie_or_cake).to_s, :body => ""
@@ -231,7 +235,7 @@ class UseVanityMailerTest < ActionMailer::TestCase
 
   def test_js_enabled_still_adds_participant
     Vanity.playground.use_js!
-    rails3? ? VanityMailer.ab_test_subject(nil, true) : VanityMailer.deliver_ab_test_subject(nil, true)
+    VanityMailer.ab_test_subject(nil, nil)
 
     alts = experiment(:pie_or_cake).alternatives
     assert_equal 1, alts.map(&:participants).sum
